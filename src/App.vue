@@ -45,6 +45,7 @@ export default {
         }
         return line;
       });
+
       this.tablature = newTablature;
     },
 

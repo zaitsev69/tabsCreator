@@ -1,5 +1,6 @@
 <template>
   <div class="fretboard-container">
+    
     <div class="fretboard">
       <!-- Pour chaque corde -->
       <div
@@ -20,10 +21,15 @@
           @click="selectFret(stringIndex, fret)"
         >
           {{ fret }}
+          
         </div>
       </div>
     </div>
   </div>
+  <button @click="addSymbol('/')" class="action-button">Slide /</button>
+    <button @click="addSymbol('b')" class="action-button">Bend b</button>
+    <button @click="addSymbol('p')" class="action-button">Pull-off p</button>
+    <button @click="addSymbol('h')" class="action-button">Hammer-on h</button>
 </template>
 
 <script>
@@ -32,19 +38,38 @@ export default {
     frets: {
       type: Number,
       default: 24 // Nombre de frets
+      
     }
   },
   data() {
     return {
-      strings: [1, 2, 3, 4, 5, 6] 
+      strings: [1, 2, 3, 4, 5, 6],
+      currentSymbol: '', // Le symbole ajouter à la note sélectionnée
+      firstFret: null, 
     };
   },
   methods: {
     selectFret(stringIndex, fret) {
-    
-      this.$emit('fret-selected', { string: stringIndex + 1, fret });
-    }
-  }
+      if (this.currentSymbol && this.firstFret === null) {
+        // stocker la premiere note lors de la selection d'un symbole
+        this.firstFret = fret;
+      } else if (this.currentSymbol && this.firstFret !== null) {
+        // ajoute le symbole avec les deux notes
+        this.$emit('fret-selected', {
+          string: stringIndex + 1,
+          fret: `${this.firstFret}${this.currentSymbol}${fret}`, 
+        });
+        this.firstFret = null;
+        this.currentSymbol = ''; 
+      } else {
+        // si pas de symbole choisi, sélectionnez la note
+        this.$emit('fret-selected', { string: stringIndex + 1, fret });
+      }
+    },
+    addSymbol(symbol) {
+      this.currentSymbol = symbol; // défini le symbole choisi
+    },
+  },
 };
 </script>
 
