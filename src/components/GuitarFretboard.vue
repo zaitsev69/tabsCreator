@@ -1,35 +1,27 @@
 <template>
   <div class="fretboard-container">
-    
+
     <div class="fretboard">
       <!-- Pour chaque corde -->
-      <div
-        v-for="(string, stringIndex) in strings"
-        :key="stringIndex"
-        class="string"
-        :class="`string-${stringIndex + 1}`"
-      >
+      <div v-for="(string, stringIndex) in strings" :key="stringIndex" class="string"
+        :class="`string-${stringIndex + 1}`">
         <!-- Case 0 -->
         <div class="fret" @click="selectFret(stringIndex, 0)">
           0
         </div>
         <!-- Boucle pour les frets -->
-        <div
-          v-for="fret in frets"
-          :key="fret"
-          class="fret"
-          @click="selectFret(stringIndex, fret)"
-        >
+        <div v-for="fret in frets" :key="fret" class="fret" @click="selectFret(stringIndex, fret)">
           {{ fret }}
-          
+
         </div>
       </div>
     </div>
   </div>
   <button @click="addSymbol('/')" class="action-button">Slide /</button>
-    <button @click="addSymbol('b')" class="action-button">Bend b</button>
-    <button @click="addSymbol('p')" class="action-button">Pull-off p</button>
-    <button @click="addSymbol('h')" class="action-button">Hammer-on h</button>
+  <button @click="addSymbol('b')" class="action-button">Bend b</button>
+  <button @click="addSymbol('p')" class="action-button">Pull-off p</button>
+  <button @click="addSymbol('h')" class="action-button">Hammer-on h</button>
+  <button @click="muteColumn" class="action-button">Ghost note x</button>
 </template>
 
 <script>
@@ -38,14 +30,14 @@ export default {
     frets: {
       type: Number,
       default: 24 // Nombre de frets
-      
+
     }
   },
   data() {
     return {
       strings: [1, 2, 3, 4, 5, 6],
       currentSymbol: '', // Le symbole ajouter à la note sélectionnée
-      firstFret: null, 
+      firstFret: null,
     };
   },
   methods: {
@@ -57,10 +49,10 @@ export default {
         // ajoute le symbole avec les deux notes
         this.$emit('fret-selected', {
           string: stringIndex + 1,
-          fret: `${this.firstFret}${this.currentSymbol}${fret}`, 
+          fret: `${this.firstFret}${this.currentSymbol}${fret}`,
         });
         this.firstFret = null;
-        this.currentSymbol = ''; 
+        this.currentSymbol = '';
       } else {
         // si pas de symbole choisi, sélectionnez la note
         this.$emit('fret-selected', { string: stringIndex + 1, fret });
@@ -69,8 +61,13 @@ export default {
     addSymbol(symbol) {
       this.currentSymbol = symbol; // défini le symbole choisi
     },
+    muteColumn() {
+      this.$emit('mute-column');
+    }
   },
+
 };
+
 </script>
 
 <style scoped>
@@ -85,7 +82,7 @@ export default {
   flex-direction: column;
   gap: 10px;
   width: 100%;
-  max-width: 900px; 
+  max-width: 900px;
   position: relative;
 }
 
@@ -93,7 +90,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: relative; 
+  position: relative;
 }
 
 .fret {
@@ -116,16 +113,16 @@ export default {
 .string::before {
   content: '';
   position: absolute;
-  top: 50%; 
-  left: -50vw; 
-  right: -50vw; 
+  top: 50%;
+  left: -50vw;
+  right: -50vw;
   height: 1px;
   background-color: black;
   transform: translateY(-50%);
 }
 
 .string-1::before {
-  height: 1px; 
+  height: 1px;
 }
 
 .string-2::before {
