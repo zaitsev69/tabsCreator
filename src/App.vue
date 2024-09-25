@@ -1,27 +1,40 @@
 <template>
   <div id="app">
-    <h1>Générateur de Tablature 🎸</h1>
+    <div class="usefull">
+      <h1>Générateur de Tablature 🎸</h1>
+      <div>
+        <h2>Comment utiliser le générateur de tablature ?</h2>
+        <ul>
+          <li>Pour sélectionner une note cliquée simplement sur la case de la corde correspondante.</li>
+          <li>Pour les slide, bend, pull-off et hammer-on, sélectionnez d'abord le bouton puis cliquer sur les deux
+            notes voulues dans l'ordre.<br> Par exemple pour écrire 1h3, appuyez sur le bouton hammer-on, ensuite la case 1 et
+            la case 3.</li>
+          <li>En cas d'erreur, vous pouvez revenir en arrière à la manière d'un Ctrl+Z avec le bouton "Annuler".</li>
+          <li>Composez puis exporter avec le bouton "Exporter en .txt".</li>
+        </ul>
+      </div>
 
 
 
-    <GuitarFretboard @fret-selected="updateTablature" @mute-column="muteActiveColumn" :frets="24" />
+      <GuitarFretboard @fret-selected="updateTablature" @mute-column="muteActiveColumn" :frets="24" />
 
-    <Tablature :tablature="tablature" :activeColumn="activeColumn" @column-selected="setActiveColumn" />
+      <Tablature :tablature="tablature" :activeColumn="activeColumn" @column-selected="setActiveColumn" />
 
-    <button @click="resetActiveColumn" class="reset-button">
-      Réinitialiser la colonne sélectionnée
-    </button>
+      <button @click="resetActiveColumn" class="reset-button">
+        Effacer la colonne sélectionnée
+      </button>
 
-    <button @click="resetAllColumns" class="reset-button reset-all">
-      Réinitialiser toute la tablature
-    </button>
+      <button @click="resetAllColumns" class="reset-button reset-all">
+        Effacer toute la tablature
+      </button>
 
-    <button @click="addSpace" class="add-space-button">Ajouter un espace</button>
+      <button @click="addSpace" class="add-space-button">Ajouter un espace</button>
 
-    <button @click="undo" class="undo-button" :disabled="history.length === 0">↻</button>
+      <button @click="undo" class="undo-button" :disabled="history.length === 0"> Annuler ↻</button>
 
-    <button @click="exportAsText" class="export-button">Exporter en .txt</button>
-    <!--<button @click="exportAsPDF" class="export-button">Exporter en .pdf</button>-->
+      <button @click="exportAsText" class="export-button">Exporter en .txt</button>
+      <!--<button @click="exportAsPDF" class="export-button">Exporter en .pdf</button>-->
+    </div>
   </div>
 </template>
 
@@ -77,7 +90,7 @@ export default {
     },
 
     resetAllColumns() {
-      this.saveHistory(); 
+      this.saveHistory();
       const initialLength = this.tablature[0].length;
       this.tablature = Array(6).fill(Array(20).fill('-'));
     },
@@ -109,7 +122,7 @@ export default {
       const text = this.tablature
         .map((line, index) => {
           const strings = ["E", "B", "G", "D", "A", "E"]; // Noms des cordes
-          
+
           // Formate chaque ligne avec une largeur fixe par colonne
           const formattedLine = line
             .map((fret) => {
@@ -135,11 +148,39 @@ export default {
 
 <style scoped>
 #app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 50px;
+  padding-bottom: 50%;
   text-align: center;
-  margin-top: 50px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  background-image: url("assets/background.jpg");
+  background-size: cover;
+  background-position: center;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+.usefull {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  max-width:90%;
+  min-width:60%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
   font-family: "Darker Grotesque", sans-serif;
 }
 
+h2 {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
 
 
 .reset-button {
@@ -149,7 +190,8 @@ export default {
   padding: 10px 20px;
   margin: 10px;
   cursor: pointer;
-  
+  font-family: "Poppins", sans-serif;
+  border-radius: 5px;
 }
 
 .reset-button:hover {
@@ -157,19 +199,61 @@ export default {
 }
 
 .add-space-button {
-  background-color: #7acce4;
-  color: black;
+  background-color: #277fc2;
+  color: rgb(255, 255, 255);
   border: none;
   padding: 10px 20px;
   margin: 10px;
   cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  border-radius: 5px
+}
+
+.add-space-button:hover {
+  background-color: #1b5e91;
 }
 
 .reset-all {
-  background-color: #4caf50;
+  background-color: #f44336;
+  font-family: "Poppins", sans-serif;
 }
 
 .reset-all:hover {
-  background-color: #388e3c;
+  background-color: #d32f2f;
+}
+
+.undo-button {
+  background-color: #277fc2;
+  color: rgb(255, 255, 255);
+  border: none;
+  padding: 10px 20px;
+  margin: 10px;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  border-radius: 5px
+}
+
+.undo-button:hover {
+  background-color: #1b5e91
+}
+
+.export-button {
+  background-color: #1ba018;
+  color: rgb(255, 255, 255);
+  border: none;
+  padding: 10px 20px;
+  margin: 10px;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  border-radius: 5px
+}
+
+.export-button:hover {
+  background-color: #0d8c1b;
+}
+
+ul {
+  text-align: left;
 }
 </style>
+

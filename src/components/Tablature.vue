@@ -46,6 +46,8 @@ export default {
 .tablature {
   font-family: monospace;
   margin-top: 20px;
+  
+  padding: 5px 0 5px 0
 }
 
 .fret {

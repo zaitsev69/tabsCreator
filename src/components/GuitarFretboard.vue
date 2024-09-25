@@ -74,7 +74,7 @@ export default {
 .fretboard-container {
   display: flex;
   justify-content: center;
-  margin-top: 50px;
+  margin-top: 10px;
 }
 
 .fretboard {
@@ -96,6 +96,7 @@ export default {
 .fret {
   width: 40px;
   height: 40px;
+  border-radius: 3px;
   background-color: #ccc;
   display: flex;
   justify-content: center;
@@ -143,5 +144,22 @@ export default {
 
 .string-6::before {
   height: 6px;
+}
+
+
+.action-button {
+  background-color: #2c2c2c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 10px;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.action-button:hover {
+background-color: black;
 }
 </style>
