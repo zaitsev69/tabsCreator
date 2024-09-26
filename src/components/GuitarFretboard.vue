@@ -118,7 +118,7 @@ export default {
   left: -50vw;
   right: -50vw;
   height: 1px;
-  background-color: black;
+  background-color: #343a40;
   transform: translateY(-50%);
 }
 

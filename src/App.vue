@@ -7,7 +7,8 @@
         <ul>
           <li>Pour sélectionner une note cliquée simplement sur la case de la corde correspondante.</li>
           <li>Pour les slide, bend, pull-off et hammer-on, sélectionnez d'abord le bouton puis cliquer sur les deux
-            notes voulues dans l'ordre.<br> Par exemple pour écrire 1h3, appuyez sur le bouton hammer-on, ensuite la case 1 et
+            notes voulues dans l'ordre.<br> Par exemple pour écrire 1h3, appuyez sur le bouton hammer-on, ensuite la
+            case 1 et
             la case 3.</li>
           <li>En cas d'erreur, vous pouvez revenir en arrière à la manière d'un Ctrl+Z avec le bouton "Annuler".</li>
           <li>Composez puis exporter avec le bouton "Exporter en .txt".</li>
@@ -33,7 +34,7 @@
       <button @click="undo" class="undo-button" :disabled="history.length === 0"> Annuler ↻</button>
 
       <button @click="exportAsText" class="export-button">Exporter en .txt</button>
-      <!--<button @click="exportAsPDF" class="export-button">Exporter en .pdf</button>-->
+      <button @click="exportAsPDF" class="export-button">Exporter en .pdf</button>
     </div>
   </div>
 </template>
@@ -41,6 +42,7 @@
 <script>
 import GuitarFretboard from './components/GuitarFretboard.vue';
 import Tablature from './components/Tablature.vue';
+import jsPDF from 'jspdf';
 
 export default {
   components: {
@@ -49,7 +51,7 @@ export default {
   },
   data() {
     return {
-      tablature: Array(6).fill(Array(20).fill('-')),
+      tablature: Array(6).fill(Array(16).fill('-')),
       activeColumn: 0,
       history: []
     };
@@ -92,7 +94,7 @@ export default {
     resetAllColumns() {
       this.saveHistory();
       const initialLength = this.tablature[0].length;
-      this.tablature = Array(6).fill(Array(20).fill('-'));
+      this.tablature = Array(6).fill(Array(16).fill('-'));
     },
 
 
@@ -111,38 +113,69 @@ export default {
         this.tablature = JSON.parse(previousState);
       }
     },
+
     muteActiveColumn() {
       const newTablature = this.tablature.map((line) =>
         line.map((value, i) => (i === this.activeColumn ? 'x' : value))
       );
       this.tablature = newTablature;
     },
+
     exportAsText() {
-      const maxColumnWidth = 4; // Largeur fixe pour chaque colonne
+      const maxColumnWidth = 5; // largeur de collone (caracteres)
+
       const text = this.tablature
         .map((line, index) => {
-          const strings = ["E", "B", "G", "D", "A", "E"]; // Noms des cordes
+          const strings = ["E", "B", "G", "D", "A", "E"];
 
-          // Formate chaque ligne avec une largeur fixe par colonne
           const formattedLine = line
             .map((fret) => {
-              // Ajuste chaque valeur pour qu'elle ait maxColumnWidth caractères (padding à droite avec des espaces)
+              // ajuster maxColumnWidth caractères (padding à droite avec des espaces)
               return fret.toString().padEnd(maxColumnWidth, ' ');
             })
-            .join(''); // Joindre les colonnes
+            .join('');
 
-          return `${strings[index]}|${formattedLine}|`; // Formater chaque ligne
+          return `${strings[index]}|${formattedLine}|`;
         })
-        .join('\n'); // Joindre chaque ligne avec un saut de ligne
+        .join('\n'); // saute ligne
 
-      // Créer le fichier texte et déclencher le téléchargement
+      // créer le fichier texte et dl
       const blob = new Blob([text], { type: 'text/plain' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
       link.download = 'tablature.txt';
       link.click();
-    }
-  }
+    },
+    exportAsPDF() {
+      const doc = new jsPDF();
+
+      doc.setFont('Courier', 'normal');
+      doc.setFontSize(9);
+
+      const lineHeight = 6;
+      const maxColumnWidth = 5; // Largeur maximale pour chaque colonne (5 caractères pour "20b20" par exemple)
+      const columnsPerPage = 16; // nombre de collone par page
+      const marginX = 10; // 
+      let y = 10;
+
+      for (let startCol = 0; startCol < this.tablature[0].length; startCol += columnsPerPage) {
+        for (let stringIndex = 0; stringIndex < this.tablature.length; stringIndex++) {
+          const stringName = ['E', 'B', 'G', 'D', 'A', 'E'][stringIndex];
+
+          const segment = this.tablature[stringIndex].slice(startCol, startCol + columnsPerPage);
+
+          const line = `${stringName}| ${segment.map(fret => fret.toString().padEnd(maxColumnWidth, ' ')).join(' ')} |`;
+
+          doc.text(line, marginX, y);
+          y += lineHeight;
+        }
+
+        // espace vertical chaque tab du pdf
+        y += 2;
+      }
+      doc.save('tablature.pdf');
+    },
+  },
 };
 </script>
 
@@ -156,7 +189,7 @@ export default {
   text-align: center;
   font-family: "Poppins", sans-serif;
   font-weight: 400;
-  background-image: url("assets/background.jpg");
+  background-image: url("assets/background2.jpg");
   background-size: cover;
   background-position: center;
   box-sizing: border-box;
@@ -167,8 +200,8 @@ export default {
   background-color: rgba(255, 255, 255, 0.8);
   padding: 20px;
   border-radius: 10px;
-  max-width:90%;
-  min-width:60%;
+  max-width: 90%;
+  min-width: 60%;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -256,4 +289,3 @@ ul {
   text-align: left;
 }
 </style>
-
