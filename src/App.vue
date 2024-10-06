@@ -9,9 +9,9 @@
           <li>Pour les slide, bend, pull-off et hammer-on, sélectionnez d'abord le bouton puis cliquer sur les deux
             notes voulues dans l'ordre.<br> Par exemple pour écrire 1h3, appuyez sur le bouton hammer-on, ensuite la
             case 1 et
-            la case 3.</li>
+            la case 3 de la corde souhaitée.</li>
           <li>En cas d'erreur, vous pouvez revenir en arrière à la manière d'un Ctrl+Z avec le bouton "Annuler".</li>
-          <li>Composez puis exporter avec le bouton "Exporter en .txt".</li>
+          <li>Composez puis exporter avec le bouton "Exporter en .txt" ou "Exporter en .pdf".</li>
         </ul>
       </div>
 
