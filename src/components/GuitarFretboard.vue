@@ -84,6 +84,7 @@ export default {
   width: 100%;
   max-width: 900px;
   position: relative;
+
 }
 
 .string {
@@ -105,6 +106,9 @@ export default {
   cursor: pointer;
   border: 1px solid black;
   z-index: 1;
+  user-select: none !important;
+
+
 }
 
 .fret:hover {
