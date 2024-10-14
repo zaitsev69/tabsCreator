@@ -193,15 +193,15 @@ export default {
   background-size: cover;
   background-position: center;
   box-sizing: border-box;
-  min-height: 100vh;
+
 }
 
 .usefull {
   background-color: rgba(255, 255, 255, 0.8);
   padding: 20px;
   border-radius: 10px;
-  max-width: 90%;
-  min-width: 60%;
+  width: 80vw; 
+  height: 80vh; 
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
