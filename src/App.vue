@@ -193,6 +193,7 @@ export default {
   background-size: cover;
   background-position: center;
   box-sizing: border-box;
+  
 
 }
 
@@ -200,9 +201,9 @@ export default {
   background-color: rgba(255, 255, 255, 0.8);
   padding: 20px;
   border-radius: 10px;
-  width: 80vw; 
-  height: 80vh; 
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 70vw; 
+  height: auto; 
 }
 
 h1 {
